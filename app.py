@@ -21,13 +21,28 @@ if uploaded_file is not None:
     st.write("## Dataset Preview")
     st.dataframe(df.head())
 
-    col1, col2 = st.columns(2)
+    total_sales = df["SALES"].sum() if "SALES" in df.columns else 0
+    average_sales = df["SALES"].mean() if "SALES" in df.columns else 0
+    total_orders = df["ORDERNUMBER"].nunique() if "ORDERNUMBER" in df.columns else df.shape[0]
+
+    if "COUNTRY" in df.columns and "SALES" in df.columns:
+        top_country = df.groupby("COUNTRY")["SALES"].sum().idxmax()
+    else:
+        top_country = "N/A"
+
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Rows", df.shape[0])
+        st.metric("Total Sales", f"${total_sales:,.0f}")
 
     with col2:
-        st.metric("Columns", df.shape[1])
+        st.metric("Total Orders", total_orders)
+
+    with col3:
+        st.metric("Average Sales", f"${average_sales:,.0f}")
+
+    with col4:
+        st.metric("Top Country", top_country)
 
     st.write("## Missing Values")
     missing_values = df.isnull().sum()
@@ -49,13 +64,13 @@ if uploaded_file is not None:
     numeric_columns = df.select_dtypes(include=["number"]).columns
     categorical_columns = df.select_dtypes(exclude=["number"]).columns
 
-    col3, col4 = st.columns(2)
+    col5, col6 = st.columns(2)
 
-    with col3:
+    with col5:
         st.write("### Numeric Columns")
         st.write(list(numeric_columns))
 
-    with col4:
+    with col6:
         st.write("### Categorical Columns")
         st.write(list(categorical_columns))
 
@@ -143,7 +158,6 @@ if uploaded_file is not None:
         )
 
     if "SALES" in df.columns:
-        average_sales = df["SALES"].mean()
         max_sales = df["SALES"].max()
 
         st.info(
