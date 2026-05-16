@@ -1,6 +1,15 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 st.set_page_config(page_title="BusinessLens AI", layout="wide")
 
@@ -164,6 +173,43 @@ if uploaded_file is not None:
             f"📊 Average order sales value is **${average_sales:,.0f}**, "
             f"while the highest order sales value is **${max_sales:,.0f}**."
         )
+
+    st.write("## Gemini AI Analysis")
+
+    if st.button("Generate AI Business Insights"):
+
+        prompt = f"""
+        Analyze this sales dataset.
+
+        Total Sales: {total_sales}
+        Average Sales: {average_sales}
+        Top Country: {top_country}
+
+        Give business recommendations and insights.
+        """
+
+        try:
+            response = model.generate_content(prompt)
+
+            st.success(response.text)
+
+        except Exception:
+
+            st.warning(
+                "Gemini API quota is currently unavailable."
+            )
+
+            st.info(
+                """
+                Demo fallback insights:
+
+                - USA is currently the strongest sales market.
+                - Classic Cars is the best-performing product category.
+                - Sales are highly concentrated in a few countries.
+                - The company should expand into weaker regions.
+                - Product diversification could reduce dependency risk.
+                """
+            )
 
 else:
     st.info("Please upload a CSV file to start analysis.")
