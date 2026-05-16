@@ -14,17 +14,13 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    # Read CSV
     df = pd.read_csv(uploaded_file, encoding="latin1")
 
-    # Success message
     st.success("CSV uploaded successfully!")
 
-    # Dataset preview
     st.write("## Dataset Preview")
     st.dataframe(df.head())
 
-    # Metrics
     col1, col2 = st.columns(2)
 
     with col1:
@@ -33,9 +29,7 @@ if uploaded_file is not None:
     with col2:
         st.metric("Columns", df.shape[1])
 
-    # Missing values
     st.write("## Missing Values")
-
     missing_values = df.isnull().sum()
 
     st.dataframe(
@@ -47,11 +41,9 @@ if uploaded_file is not None:
         )
     )
 
-    # Statistics
     st.write("## Basic Statistics")
     st.dataframe(df.describe())
 
-    # Column types
     st.write("## Column Types")
 
     numeric_columns = df.select_dtypes(include=["number"]).columns
@@ -67,15 +59,9 @@ if uploaded_file is not None:
         st.write("### Categorical Columns")
         st.write(list(categorical_columns))
 
-    # =========================
-    # VISUAL ANALYTICS
-    # =========================
-
     st.write("## Visual Analytics")
 
-    # Sales Histogram
     if "SALES" in df.columns:
-
         st.write("### Sales Distribution")
 
         fig_sales = px.histogram(
@@ -85,14 +71,9 @@ if uploaded_file is not None:
             title="Distribution of Sales"
         )
 
-        st.plotly_chart(
-            fig_sales,
-            use_container_width=True
-        )
+        st.plotly_chart(fig_sales, use_container_width=True)
 
-    # Top Countries by Sales
     if "COUNTRY" in df.columns and "SALES" in df.columns:
-
         st.write("### Top Countries by Sales")
 
         country_sales = (
@@ -110,14 +91,9 @@ if uploaded_file is not None:
             title="Top 10 Countries by Total Sales"
         )
 
-        st.plotly_chart(
-            fig_country,
-            use_container_width=True
-        )
+        st.plotly_chart(fig_country, use_container_width=True)
 
-    # Product Line Pie Chart
     if "PRODUCTLINE" in df.columns and "SALES" in df.columns:
-
         st.write("### Sales by Product Line")
 
         product_sales = (
@@ -134,23 +110,45 @@ if uploaded_file is not None:
             title="Sales Share by Product Line"
         )
 
-        st.plotly_chart(
-            fig_product,
-            use_container_width=True
-        )
+        st.plotly_chart(fig_product, use_container_width=True)
 
-    # Correlation matrix
     st.write("## Correlation Matrix")
 
     if len(numeric_columns) > 1:
-
         correlation_matrix = df[numeric_columns].corr()
-
         st.dataframe(correlation_matrix)
-
     else:
-        st.warning(
-            "Not enough numeric columns for correlation analysis."
+        st.warning("Not enough numeric columns for correlation analysis.")
+
+    st.write("## Business Insights")
+
+    if "COUNTRY" in df.columns and "SALES" in df.columns:
+        top_country_row = country_sales.iloc[0]
+        top_country = top_country_row["COUNTRY"]
+        top_country_sales = top_country_row["SALES"]
+
+        st.success(
+            f"🌍 Top performing country is **{top_country}** "
+            f"with total sales of **${top_country_sales:,.0f}**."
+        )
+
+    if "PRODUCTLINE" in df.columns and "SALES" in df.columns:
+        top_product_row = product_sales.iloc[0]
+        top_product = top_product_row["PRODUCTLINE"]
+        top_product_sales = top_product_row["SALES"]
+
+        st.success(
+            f"🏆 Best-selling product line is **{top_product}** "
+            f"with total sales of **${top_product_sales:,.0f}**."
+        )
+
+    if "SALES" in df.columns:
+        average_sales = df["SALES"].mean()
+        max_sales = df["SALES"].max()
+
+        st.info(
+            f"📊 Average order sales value is **${average_sales:,.0f}**, "
+            f"while the highest order sales value is **${max_sales:,.0f}**."
         )
 
 else:
