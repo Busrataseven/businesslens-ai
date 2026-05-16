@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 st.set_page_config(page_title="BusinessLens AI", layout="wide")
 
@@ -57,6 +58,42 @@ if uploaded_file is not None:
     with col4:
         st.write("### Categorical Columns")
         st.write(list(categorical_columns))
+
+    st.write("## Visual Analytics")
+
+    if "SALES" in df.columns:
+        st.write("### Sales Distribution")
+        fig_sales = px.histogram(
+            df,
+            x="SALES",
+            nbins=30,
+            title="Distribution of Sales"
+        )
+        st.plotly_chart(fig_sales, use_container_width=True)
+
+    if "COUNTRY" in df.columns and "SALES" in df.columns:
+        st.write("### Top Countries by Sales")
+        country_sales = df.groupby("COUNTRY")["SALES"].sum().sort_values(ascending=False).head(10).reset_index()
+
+        fig_country = px.bar(
+            country_sales,
+            x="COUNTRY",
+            y="SALES",
+            title="Top 10 Countries by Total Sales"
+        )
+        st.plotly_chart(fig_country, use_container_width=True)
+
+    if "PRODUCTLINE" in df.columns and "SALES" in df.columns:
+        st.write("### Sales by Product Line")
+        product_sales = df.groupby("PRODUCTLINE")["SALES"].sum().sort_values(ascending=False).reset_index()
+
+        fig_product = px.pie(
+            product_sales,
+            names="PRODUCTLINE",
+            values="SALES",
+            title="Sales Share by Product Line"
+        )
+        st.plotly_chart(fig_product, use_container_width=True)
 
     st.write("## Correlation Matrix")
 
