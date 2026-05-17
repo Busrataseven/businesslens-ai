@@ -4,8 +4,6 @@ AI-Powered Business Analyst Assistant built for Hackathon 2026 using Gemini API,
 
 BusinessLens AI transforms raw CSV business datasets into interactive dashboards, visual analytics and AI-generated business insights within seconds.
 
----
-
 # Project Overview
 
 BusinessLens AI is an intelligent business analytics platform designed to help users quickly understand sales performance, market trends and business opportunities through automated data analysis and Generative AI.
@@ -17,8 +15,6 @@ Users can upload a CSV dataset and instantly receive:
 - Correlation analysis
 - Data quality analysis
 - AI-powered strategic insights
-
----
 
 # Features
 
@@ -59,8 +55,6 @@ Integrated Gemini API generates business-focused strategic insights such as:
 - Descriptive statistics
 - Numeric and categorical column identification
 
----
-
 # Technologies Used
 
 | Technology | Purpose |
@@ -70,8 +64,6 @@ Integrated Gemini API generates business-focused strategic insights such as:
 | Pandas | Data processing |
 | Plotly | Interactive visualizations |
 | Gemini API | AI-generated business insights |
-
----
 
 # Application Screenshots
 
@@ -85,43 +77,7 @@ Dynamic sales and country-based visualizations.
 
 ## AI Business Insights
 
-Gemini-powered strategic recommendations and analysis.
-
----
-
-# How to Run Locally
-
-## Clone Repository
-
-```bash
-git clone https://github.com/Busrataseven/businesslens-ai.git
-```
-
----
-
-## Install Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Create .env File
-
-```env
-GEMINI_API_KEY=YOUR_API_KEY
-```
-
----
-
-## Run Application
-
-```bash
-streamlit run app.py
-```
-
----
+Gemini-powered strategic recommendations and analysis
 
 # Example Business Insights
 
@@ -131,22 +87,9 @@ streamlit run app.py
 - Product diversification could reduce dependency risks.
 - Expansion opportunities exist in weaker regions.
 
----
-
 # Hackathon Vision
 
 BusinessLens AI aims to simplify business analytics by combining traditional data analysis with Generative AI capabilities.
 
 The goal is to help businesses and decision-makers gain actionable insights faster without requiring advanced technical expertise.
 
----
-
-# Team
-
-Hackathon 2026 Project Team
-
----
-
-# License
-
-This project was developed for educational and hackathon purposes.
